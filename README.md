@@ -1,10 +1,10 @@
 ### CS3220 AI Workout Generator
 
-Developers:
-Jason Giang
-Cristian Hernandez Juan
-Benjamin Geiser
-Anderson Rodriguez
+### Developers:
+* Jason Giang
+* Cristian Hernandez Juan
+* Benjamin Geiser
+* Anderson Rodriguez
 
 ### Description:
 The CS3220 AI Workout Generator is a website designed to cater specific workouts for users depending on their body data
