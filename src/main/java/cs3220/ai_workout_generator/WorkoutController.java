@@ -10,10 +10,10 @@ import java.util.List;
 @Controller
 public class WorkoutController {
 
-    private final WorkoutRepository workouts;
+    private final WorkoutService workouts;
     private final AiWorkoutService aiService;
 
-    public WorkoutController(WorkoutRepository workouts, AiWorkoutService aiService) {
+    public WorkoutController(WorkoutService workouts, AiWorkoutService aiService) {
         this.workouts = workouts;
         this.aiService = aiService;
     }
@@ -51,11 +51,11 @@ public class WorkoutController {
         String resultText = aiService.generateWorkoutText(prompt);
 
         // Save workout in in-memory repository
-        Workout saved = workouts.create(
+        Workout saved = workouts.createAIWorkout(
                 "Workout: " + prompt,
                 "Custom",
                 resultText,
-                currentUser.getUsername()
+                currentUser.getName()
         );
 
         // Put everything back into the model for generate.jte
@@ -77,7 +77,7 @@ public class WorkoutController {
             return "redirect:/login";
         }
 
-        List<Workout> myWorkouts = workouts.findByOwner(currentUser.getUsername());
+        List<Workout> myWorkouts = workouts.getWorkoutsByOwner(currentUser.getName());
         model.addAttribute("workouts", myWorkouts);
 
         return "workout-list";   // src/main/jte/workout-list.jte
@@ -96,7 +96,7 @@ public class WorkoutController {
             return "redirect:/login";
         }
 
-        Workout workout = workouts.findByIdAndOwner(id, currentUser.getUsername());
+        Workout workout = workouts.getWorkoutById(id);
         if (workout == null) {
             // simple fallback – you can change to an error.jte if you have one
             return "redirect:/workouts";
