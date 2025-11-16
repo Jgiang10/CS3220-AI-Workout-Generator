@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(Model model, HttpSession session) {
         // Read current user from the session (set by your login code)
         User currentUser = (User) session.getAttribute("currentUser");
 
-        String username = (currentUser == null) ? null : currentUser.getUsername();
+        String username = (currentUser == null) ? null : currentUser.getName();
         model.addAttribute("username", username);   // used by home.jte
 
         // Renders src/main/jte/home.jte

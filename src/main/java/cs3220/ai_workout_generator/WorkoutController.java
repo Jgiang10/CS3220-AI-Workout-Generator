@@ -87,7 +87,7 @@ public class WorkoutController {
     // GET /workouts/{id} → view one
     // -------------------------------
     @GetMapping("/workouts/{id}")
-    public String viewWorkout(@PathVariable Long id,
+    public String viewWorkout(@PathVariable int id,
                               Model model,
                               HttpSession session) {
 
