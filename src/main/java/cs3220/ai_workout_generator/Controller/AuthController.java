@@ -29,7 +29,7 @@ public class AuthController {
         if (userData.validate(email, password)) {
             sessionUser.setEmail(email);
             sessionUser.setAuthenticated(true);
-            return "redirect:/aichat";
+            return "redirect:/home";
         }
         return "redirect:/login";
     }

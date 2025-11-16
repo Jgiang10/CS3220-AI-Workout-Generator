@@ -1,4 +1,4 @@
-package cs3220.ai_workout_generator;
+package cs3220.ai_workout_generator.Controller;
 
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;

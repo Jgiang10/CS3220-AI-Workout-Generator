@@ -1,5 +1,9 @@
-package cs3220.ai_workout_generator;
+package cs3220.ai_workout_generator.Controller;
 
+import cs3220.ai_workout_generator.AiWorkoutService;
+import cs3220.ai_workout_generator.User;
+import cs3220.ai_workout_generator.Workout;
+import cs3220.ai_workout_generator.WorkoutService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
