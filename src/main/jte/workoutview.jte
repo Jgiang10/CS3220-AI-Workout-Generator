@@ -42,6 +42,7 @@
 
 Workout View Page
 
+
 <footer class="text-center py-4 border-top">
     © ${java.time.Year.now().getValue()} AI Workout Generator
 </footer>
