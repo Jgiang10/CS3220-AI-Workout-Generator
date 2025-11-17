@@ -44,7 +44,7 @@ public class WorkoutController {
     public String handleGenerate(@RequestParam String prompt,
                                  Model model) {
 
-        if (!sessionUser.isAuthenticated()) {
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
 
@@ -74,7 +74,7 @@ public class WorkoutController {
     // -------------------------------
     @GetMapping("/workouts")
     public String listWorkouts(Model model) {
-        if (!sessionUser.isAuthenticated()) {
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
         String username = sessionUser.getEmail();
@@ -90,18 +90,18 @@ public class WorkoutController {
     @GetMapping("/workouts/{id}")
     public String viewWorkout(@PathVariable int id,
                               Model model) {
-        if (!sessionUser.isAuthenticated()) {
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
 
         Workout workout = workouts.getWorkoutById(id);
         if (workout == null) {
             // simple fallback – you can change to an error.jte if you have one
-            return "redirect:/error";
+            return "redirect:/workouts";
         }
 
         model.addAttribute("workout", workout);
 
-        return "workoutview";
+        return "workoutview";   // src/main/jte/workoutview.jte
     }
 }
