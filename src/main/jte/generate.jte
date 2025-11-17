@@ -1,4 +1,5 @@
 @param cs3220.ai_workout_generator.User bodyInfo
+@param String username
 @param String prompt
 @param String result
 @param Long workoutId
@@ -26,13 +27,13 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">
-                        ${bodyInfo == null ? "Profile" : bodyInfo.getName()}
+                        ${username == null ? "Profile" : username}
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="${bodyInfo == null ? "/login" : "/logout"}">
-                        ${bodyInfo == null ? "Login" : "Logout"}
+                    <a class="nav-link" href="${username == null ? "/login" : "/logout"}">
+                        ${username == null ? "Login" : "Logout"}
                     </a>
                 </li>
 
@@ -54,7 +55,7 @@
             <h3>Your Profile</h3>
             <p>
                 Logged in as:
-                <strong>${bodyInfo == null ? "Guest" : bodyInfo.getName()}</strong>
+                <strong>${username == null ? "Guest" : username}</strong>
             </p>
         </div>
     </div>
