@@ -16,6 +16,3 @@ all of their previously saved workouts as well.
 * Copy application.properties.sample to application.properties and set your OpenRouter API key.
 * Build and run the application.
 * Use the files in the files folder to test.
-
-
-Testing - Cristian H

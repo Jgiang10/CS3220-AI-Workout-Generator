@@ -1,0 +1,158 @@
+
+:root{
+    --brand-dark:#2b2b2b;
+    --brand-accent:#6c63ff;
+    --card-bg:#f1f1f1;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background-color:#ffffff;;
+    color:#111;
+}
+
+header{
+
+    margin: 20px;
+    padding: 20px;
+    background-color: gray;
+    vertical-align: middle;
+
+}
+.navbar-brand{
+    width: 72px; height: 36px;
+    border-radius: .5rem;
+    background: var(--brand-dark);
+    color:#fff; display:flex; align-items:center; justify-content:center;
+    font-weight:700; letter-spacing:1px;
+}
+.hero-title{
+    font-weight: 800;
+    letter-spacing:.3px;
+}
+
+.rounded-3xl{
+    border-radius: 1.25rem !important;
+}
+
+.card-soft{
+    background: var(--card-bg);
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.input-pill .form-control{
+    border-radius: 999px 0 0 999px;
+    padding-left: 1.25rem;
+    height: 56px;
+}
+
+.input-pill .btn{
+    border-radius: 0 999px 999px 0;
+    height: 56px;
+}
+
+.ai-output{
+    white-space: pre-wrap;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.info-card h3{
+    font-weight:800;
+}
+
+@media (min-width: 992px){
+    .info-card{ min-height: 280px; }
+}
+
+.workout{
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(128,128,128,0.5);
+}
+.aboutus{
+    margin: 20px auto;
+    padding: 20px;
+    gap: 40px;
+}
+.aboutus-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.aboutus-img {
+    width: 150px;
+    height: auto;
+    flex-shrink: 0;
+    border-radius: 8px;
+}
+.error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.error-content h1{
+    font-weight: bold;
+    margin: 20px;
+}
+footer{
+    color:#666;
+    margin-top: auto;
+    text-align: center;
+    padding: 20px;
+}
+.col-form-label {
+    white-space: nowrap;
+}
+
+/*imports from other css files*/
+
+.workout-header {
+    background-color: lightgray;
+    text-align: center;
+    padding: 5px;
+}
+.workout-table {
+    border-spacing: 0 16px; /* 16px vertical space between rows */
+    border-collapse: separate;
+}
+.header-bar {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    min-height: 0;
+    padding: 10px;
+    gap: 20px; /* space between items */
+}
+.workout-table th,
+.workout-table td {
+    padding: 20px;
+    font-size: 1.25em;
+    background-color: #827470;
+    color: white;
+    vertical-align: middle;
+}
+
+.headerinfo{
+    font-size: 40px;
+}
+.card-body{
+    background-color: rgb(212, 212, 212);
+    border-radius: 32px;
+}
+
+.highlight-row {
+    border: 2px solid #00aaff;
+}
+
+.table thead th {
+    font-weight: bold;
+}
