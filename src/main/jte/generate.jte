@@ -11,37 +11,37 @@
     <title>Generate Workout</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+        <div class="container-lg">
+            <a class="navbar-brand" href="/">LOGO</a>
 
-<nav class="navbar navbar-expand-lg bg-light border-bottom">
-    <div class="container-lg">
-        <a class="navbar-brand" href="/">LOGO</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
 
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="/about" class="nav-link">About Us</a></li>
 
-                <li class="nav-item"><a href="/about" class="nav-link">About Us</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">
+                            ${username == null ? "Profile" : username}
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">
-                        ${username == null ? "Profile" : username}
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${username == null ? "/login" : "/logout"}">
+                            ${username == null ? "Login" : "Logout"}
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="${username == null ? "/login" : "/logout"}">
-                        ${username == null ? "Login" : "Logout"}
-                    </a>
-                </li>
-
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
+    </nav>
+</header>
 
 <header class="container-lg py-5 text-center">
     <h1 class="display-5 hero-title">What are you looking to work on today?</h1>
@@ -112,6 +112,8 @@
 <footer class="text-center py-4 border-top">
     © ${java.time.Year.now().getValue()} AI Workout Generator
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
 </body>
 </html>

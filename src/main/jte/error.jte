@@ -2,6 +2,7 @@
 @param String error
 @param String message
 @param String path
+@param String username
 
 <!doctype html>
 <html lang="en">
@@ -13,21 +14,28 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<header class="p-3 bg-lightgray">
+    <nav class="navbar navbar-expand-lg bg-light border-bottom">
+        <div class="container-lg">
+            <a class="navbar-brand" href="/">LOGO</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item"><a href="/about" class="nav-link">About Us</a></li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="/profile">
+                            ${username == null ? "Profile" : username}
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Registration/Profile</a>
+                        <a class="nav-link" href="${username == null ? "/login" : "/logout"}">
+                            ${username == null ? "Login" : "Logout"}
+                        </a>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -41,9 +49,10 @@
         <a href="/home" class="btn btn-primary">Back To Home Page</a>
     </div>
 </section>
-<footer>
-    Copyright &copy;
+<footer class="text-center py-4 border-top">
+    © ${java.time.Year.now().getValue()} AI Workout Generator
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

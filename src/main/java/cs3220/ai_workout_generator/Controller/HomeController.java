@@ -24,4 +24,9 @@ public class HomeController {
         // Renders src/main/jte/home.jte
         return "home";
     }
+
+    @GetMapping("/about")
+    public String aboutus(Model model) {
+        return "aboutus";
+    }
 }
