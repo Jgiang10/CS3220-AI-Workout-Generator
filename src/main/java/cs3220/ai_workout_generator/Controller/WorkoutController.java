@@ -84,7 +84,7 @@ public class WorkoutController {
         List<Workout> myWorkouts = workouts.getWorkoutsByOwner(currentUser.getName());
         model.addAttribute("workouts", myWorkouts);
 
-        return "workout-list";   // src/main/jte/workout-list.jte
+        return "workoutlist";   // src/main/jte/workoutlist.jte
     }
 
     // -------------------------------
@@ -108,6 +108,6 @@ public class WorkoutController {
 
         model.addAttribute("workout", workout);
 
-        return "workout-view";   // src/main/jte/workout-view.jte
+        return "workoutview";   // src/main/jte/workoutview.jte
     }
 }
