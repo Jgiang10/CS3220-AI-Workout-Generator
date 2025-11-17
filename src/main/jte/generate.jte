@@ -26,7 +26,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link" href="/profile">
-                        ${bodyInfo == null ? "Profile" : bodyInfo.getUsername()}
+                        ${bodyInfo == null ? "Profile" : bodyInfo.getName()}
                     </a>
                 </li>
 
@@ -54,7 +54,7 @@
             <h3>Your Profile</h3>
             <p>
                 Logged in as:
-                <strong>${bodyInfo == null ? "Guest" : bodyInfo.getUsername()}</strong>
+                <strong>${bodyInfo == null ? "Guest" : bodyInfo.getName()}</strong>
             </p>
         </div>
     </div>
