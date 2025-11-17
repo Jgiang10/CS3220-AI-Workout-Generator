@@ -7,8 +7,16 @@ import cs3220.ai_workout_generator.SessionUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.prompt.Prompt;
+import cs3220.ai_workout_generator.AiExchange;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class WorkoutController {
@@ -16,11 +24,17 @@ public class WorkoutController {
     private final WorkoutService workouts;
     private final AiWorkoutService aiService;
     private final SessionUser sessionUser;
+    private final ChatClient chatClient;
+    private final List<AiExchange> history = new ArrayList<>();
 
-    public WorkoutController(WorkoutService workouts, AiWorkoutService aiService, SessionUser sessionUser) {
+    public WorkoutController(WorkoutService workouts,
+                             AiWorkoutService aiService,
+                             SessionUser sessionUser,
+                             ChatClient.Builder chatClientBuilder) {
         this.workouts = workouts;
         this.aiService = aiService;
         this.sessionUser = sessionUser;
+        this.chatClient = chatClientBuilder.build();
     }
 
     // -------------------------------
@@ -50,7 +64,15 @@ public class WorkoutController {
 
         String username = sessionUser.getEmail();
         // Call AI service to generate text
-        String resultText = aiService.generateWorkoutText(prompt);
+        String resultText;
+        try {
+            resultText = realChat(prompt);
+        } catch (Exception e) {
+            resultText = aiService.generateWorkoutText(prompt);
+        }
+
+        // Recording exchange for future uses so there aren't repeats
+        history.add(new AiExchange(prompt, resultText));
 
         // Save workout in in-memory repository
         Workout saved = workouts.createAIWorkout(
@@ -103,5 +125,35 @@ public class WorkoutController {
         model.addAttribute("workout", workout);
 
         return "workoutview";   // src/main/jte/workoutview.jte
+    }
+
+    private String realChat(String message) {
+        List<Message> messages = new ArrayList<>();
+        for (var exchange : history) {
+            messages.add(new UserMessage(exchange.getUserMessage()));
+            messages.add(new AssistantMessage(exchange.getAiMessage()));
+        }
+        String systemMsg = """
+        Output a mobile-friendly workout card for <original prompt>. The layout must be like this:
+
+                Warm-up:
+                - Light cardio (5 min)
+                - Dynamic stretching
+
+                Workout:
+                - 3x12 Push-ups (time)
+                - 3x10 Dumbbell bench press (time)
+                - 3x15 Shoulder raises (time)
+
+                Cooldown:
+                - Stretch 5 min
+                
+                After the workout include a final line: "Prompt: <original prompt>
+        Keep total text <= 200 characters.
+               
+               """.formatted(message);
+        messages.add(new SystemMessage(systemMsg));
+        messages.add(new UserMessage(message));
+        return chatClient.prompt(new Prompt(messages)).call().content();
     }
 }
