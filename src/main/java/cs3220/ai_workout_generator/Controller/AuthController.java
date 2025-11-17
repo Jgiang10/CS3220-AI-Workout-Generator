@@ -17,8 +17,11 @@ public class AuthController {
         this.sessionUser = sessionUser;
         this.userData = userData;
     }
-
-    @GetMapping({"/","/login"})
+    @GetMapping("/")
+    public String showhome(){
+        return "redirect:/home";
+    }
+    @GetMapping("/login")
     public String showLogin() {
         return "login";
     }

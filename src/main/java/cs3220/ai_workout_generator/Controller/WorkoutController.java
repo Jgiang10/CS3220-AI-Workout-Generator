@@ -1,35 +1,49 @@
 package cs3220.ai_workout_generator.Controller;
 
 import cs3220.ai_workout_generator.AiWorkoutService;
-import cs3220.ai_workout_generator.User;
 import cs3220.ai_workout_generator.Workout;
 import cs3220.ai_workout_generator.WorkoutService;
-import jakarta.servlet.http.HttpSession;
+import cs3220.ai_workout_generator.SessionUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.prompt.Prompt;
+import cs3220.ai_workout_generator.AiExchange;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class WorkoutController {
 
     private final WorkoutService workouts;
     private final AiWorkoutService aiService;
+    private final SessionUser sessionUser;
+    private final ChatClient chatClient;
+    private final List<AiExchange> history = new ArrayList<>();
 
-    public WorkoutController(WorkoutService workouts, AiWorkoutService aiService) {
+    public WorkoutController(WorkoutService workouts,
+                             AiWorkoutService aiService,
+                             SessionUser sessionUser,
+                             ChatClient.Builder chatClientBuilder) {
         this.workouts = workouts;
         this.aiService = aiService;
+        this.sessionUser = sessionUser;
+        this.chatClient = chatClientBuilder.build();
     }
 
     // -------------------------------
     // GET /generate  → show page
     // -------------------------------
     @GetMapping("/generate")
-    public String showGenerate(Model model, HttpSession session) {
-        User currentUser = (User) session.getAttribute("currentUser");
-
-        model.addAttribute("bodyInfo", currentUser);  // used in generate.jte
+    public String showGenerate(Model model) {
+        String username = sessionUser.isAuthenticated() ? sessionUser.getEmail() : null;
+        model.addAttribute("username", username);   // used by home.jte
         model.addAttribute("prompt", "");
         model.addAttribute("result", null);
         model.addAttribute("workoutId", null);
@@ -42,31 +56,37 @@ public class WorkoutController {
     // -------------------------------
     @PostMapping("/generate")
     public String handleGenerate(@RequestParam String prompt,
-                                 Model model,
-                                 HttpSession session) {
+                                 Model model) {
 
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null) {
-            // if not logged in, send them to login
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
 
+        String username = sessionUser.getEmail();
         // Call AI service to generate text
-        String resultText = aiService.generateWorkoutText(prompt);
+        String resultText;
+        try {
+            resultText = realChat(prompt);
+        } catch (Exception e) {
+            resultText = aiService.generateWorkoutText(prompt);
+        }
+
+        // Recording exchange for future uses so there aren't repeats
+        history.add(new AiExchange(prompt, resultText));
 
         // Save workout in in-memory repository
         Workout saved = workouts.createAIWorkout(
                 "Workout: " + prompt,
-                "Custom",
                 resultText,
-                currentUser.getName()
+                username,
+                username
         );
 
         // Put everything back into the model for generate.jte
-        model.addAttribute("bodyInfo", currentUser);
+        model.addAttribute("username", username);
         model.addAttribute("prompt", prompt);
         model.addAttribute("result", resultText);
-        model.addAttribute("workoutId", saved.getId());
+        model.addAttribute("workoutId", Long.valueOf(saved.getId()));
 
         return "generate";
     }
@@ -75,13 +95,12 @@ public class WorkoutController {
     // GET /workouts → list user's workouts
     // -------------------------------
     @GetMapping("/workouts")
-    public String listWorkouts(Model model, HttpSession session) {
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null) {
+    public String listWorkouts(Model model) {
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
-
-        List<Workout> myWorkouts = workouts.getWorkoutsByOwner(currentUser.getName());
+        String username = sessionUser.getEmail();
+        List<Workout> myWorkouts = workouts.getWorkoutsByOwner(username);
         model.addAttribute("workouts", myWorkouts);
 
         return "workoutlist";   // src/main/jte/workoutlist.jte
@@ -92,11 +111,8 @@ public class WorkoutController {
     // -------------------------------
     @GetMapping("/workouts/{id}")
     public String viewWorkout(@PathVariable int id,
-                              Model model,
-                              HttpSession session) {
-
-        User currentUser = (User) session.getAttribute("currentUser");
-        if (currentUser == null) {
+                              Model model) {
+        if (!sessionUser.isAuthenticated()){
             return "redirect:/login";
         }
 
@@ -109,5 +125,35 @@ public class WorkoutController {
         model.addAttribute("workout", workout);
 
         return "workoutview";   // src/main/jte/workoutview.jte
+    }
+
+    private String realChat(String message) {
+        List<Message> messages = new ArrayList<>();
+        for (var exchange : history) {
+            messages.add(new UserMessage(exchange.getUserMessage()));
+            messages.add(new AssistantMessage(exchange.getAiMessage()));
+        }
+        String systemMsg = """
+        Output a mobile-friendly workout card for <original prompt>. The layout must be like this:
+
+                Warm-up:
+                - Light cardio (5 min)
+                - Dynamic stretching
+
+                Workout:
+                - 3x12 Push-ups (time)
+                - 3x10 Dumbbell bench press (time)
+                - 3x15 Shoulder raises (time)
+
+                Cooldown:
+                - Stretch 5 min
+                
+                After the workout include a final line: "Prompt: <original prompt>
+        Keep total text <= 200 characters.
+               
+               """.formatted(message);
+        messages.add(new SystemMessage(systemMsg));
+        messages.add(new UserMessage(message));
+        return chatClient.prompt(new Prompt(messages)).call().content();
     }
 }
