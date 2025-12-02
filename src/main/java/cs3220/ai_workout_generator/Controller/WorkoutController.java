@@ -137,16 +137,15 @@ public class WorkoutController {
         Output a mobile-friendly workout card for <original prompt>. The layout must be like this:
 
                 Warm-up:
-                - Light cardio (5 min)
-                - Dynamic stretching
+                - <warm up activity> <duration>
+                - ... (more warm up activities)
 
                 Workout:
-                - 3x12 Push-ups (time)
-                - 3x10 Dumbbell bench press (time)
-                - 3x15 Shoulder raises (time)
+                - <exercise 1> <sets>x<reps> <duration>
+                - ... (more exercises depending on time)
 
                 Cooldown:
-                - Stretch 5 min
+                - <cooldown activity> <duration>
                 
                 After the workout include a final line: "Prompt: <original prompt>
         Keep total text <= 200 characters.
