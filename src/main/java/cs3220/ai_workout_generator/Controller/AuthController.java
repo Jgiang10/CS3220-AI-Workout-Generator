@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import cs3220.ai_workout_generator.SessionUser;
 import cs3220.ai_workout_generator.UserData;
+import org.springframework.ui.Model;
 
 @Controller
 public class AuthController {
@@ -34,6 +35,31 @@ public class AuthController {
             sessionUser.setAuthenticated(true);
             return "redirect:/home";
         }
+        return "redirect:/login";
+    }
+    @GetMapping("/registration")
+    public String showRegister(Model model) {
+        if (sessionUser.isAuthenticated()) {
+            return "redirect:/home";
+        }
+        model.addAttribute("error", null);
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String handleRegister(@RequestParam String email,
+                                 @RequestParam String password,
+                                 Model model) {
+        if (sessionUser.isAuthenticated()) {
+            return "redirect:/home";
+        }
+
+        if (userData.exists(email)) {
+            model.addAttribute("error", "User already exists");
+            return "registration";
+        }
+
+        userData.create(email, password);
         return "redirect:/login";
     }
     @GetMapping("/logout")

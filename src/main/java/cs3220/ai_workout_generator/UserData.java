@@ -27,6 +27,29 @@ public class UserData {
         return users.stream().filter(u -> u.getEmail().equals(email)).findFirst();
     }
 
+    public boolean exists(String email) {
+        return findByEmail(email).isPresent();
+    }
+
+    public boolean create(User user) {
+        if (!exists(user.getEmail())) {
+            addUser(user);
+            return true;
+        }
+        return false;
+    }
+
+    //overload:
+    public boolean create(String email, String password){
+        if (!exists(email)) {
+            String name = email.contains("@") ? email.substring(0, email.indexOf('@')) : email;
+            addUser(new User(email, email, password));
+            return true;
+        }
+        return false;
+    }
+
+
     public boolean validate(String email, String password) {
         return findByEmail(email).map(u -> u.getPassword().equals(password)).orElse(false);
     }
