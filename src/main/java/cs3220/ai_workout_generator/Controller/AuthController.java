@@ -54,9 +54,11 @@ public class AuthController {
             return "redirect:/register?error=Username already taken";
         }
 
+
         // 1. Create and Save User (Table 1)
         User newUser = new User(username, password);
         userRepository.save(newUser);
+
 
         // 2. Create and Save Profile (Table 2)
         UserProfile newProfile = new UserProfile(name, age, gender, height, weight, workoutsPerWeek, experienceLevel, goals);

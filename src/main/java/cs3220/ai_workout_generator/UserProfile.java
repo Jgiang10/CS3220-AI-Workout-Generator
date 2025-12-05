@@ -19,6 +19,7 @@ public class UserProfile {
     private String experienceLevel; // Beginner, Intermediate, Advanced
     private String goals;
 
+
     // Link back to the User table
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
