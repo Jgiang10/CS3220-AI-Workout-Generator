@@ -1,4 +1,4 @@
-@param cs3220.ai_workout_generator.User bodyInfo
+@param cs3220.ai_workout_generator.Controller.User bodyInfo
 @param String username
 @param String prompt
 @param String result

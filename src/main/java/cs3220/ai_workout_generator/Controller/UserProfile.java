@@ -1,4 +1,4 @@
-package cs3220.ai_workout_generator;
+package cs3220.ai_workout_generator.Controller;
 
 import jakarta.persistence.*;
 
@@ -18,7 +18,6 @@ public class UserProfile {
     private int workoutsPerWeek;
     private String experienceLevel; // Beginner, Intermediate, Advanced
     private String goals;
-
 
     // Link back to the User table
     @OneToOne
