@@ -1,75 +1,74 @@
-package cs3220.ai_workout_generator;
+package cs3220.ai_workout_generator.Controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import cs3220.ai_workout_generator.SessionUser;
+import cs3220.ai_workout_generator.UserData;
+import org.springframework.ui.Model;
 
 @Controller
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
     private final SessionUser sessionUser;
+    private final UserData userData;
 
-    public AuthController(UserRepository userRepository, UserProfileRepository userProfileRepository, SessionUser sessionUser) {
-        this.userRepository = userRepository;
-        this.userProfileRepository = userProfileRepository;
+    public AuthController(SessionUser sessionUser, UserData userData) {
         this.sessionUser = sessionUser;
+        this.userData = userData;
     }
-
+    @GetMapping("/")
+    public String showhome(){
+        return "redirect:/home";
+    }
     @GetMapping("/login")
-    public String login() {
+    public String showLogin() {
         return "login";
     }
-
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            sessionUser.setEmail(user.getUsername()); // Note: Refactor SessionUser to use "Username" instead of Email later
+    public String doLogin(@RequestParam("email") String email,
+                          @RequestParam("password") String password) {
+        // Simple demo auth: accept any non-empty email. Replace with real auth as needed.
+        if (userData.validate(email, password)) {
+            sessionUser.setEmail(email);
             sessionUser.setAuthenticated(true);
             return "redirect:/home";
         }
-        model.addAttribute("error", "Invalid username or password");
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public String register(
-            @RequestParam String username, @RequestParam String password,
-            @RequestParam String name, @RequestParam int age,
-            @RequestParam String gender, @RequestParam double height,
-            @RequestParam double weight, @RequestParam int workoutsPerWeek,
-            @RequestParam String experienceLevel, @RequestParam String goals) {
-
-        // Check if user exists
-        if (userRepository.findByUsername(username) != null) {
-            return "redirect:/register?error=Username already taken";
-        }
-
-
-        // 1. Create and Save User (Table 1)
-        User newUser = new User(username, password);
-        userRepository.save(newUser);
-
-
-        // 2. Create and Save Profile (Table 2)
-        UserProfile newProfile = new UserProfile(name, age, gender, height, weight, workoutsPerWeek, experienceLevel, goals);
-        newProfile.setUser(newUser); // Link them
-        userProfileRepository.save(newProfile);
-
         return "redirect:/login";
     }
+    @GetMapping("/registration")
+    public String showRegister(Model model) {
+        if (sessionUser.isAuthenticated()) {
+            return "redirect:/home";
+        }
+        model.addAttribute("error", null);
+        return "registration";
+    }
 
+    @PostMapping("/registration")
+    public String handleRegister(@RequestParam String email,
+                                 @RequestParam String password,
+                                 Model model) {
+        if (sessionUser.isAuthenticated()) {
+            return "redirect:/home";
+        }
+
+        if (userData.exists(email)) {
+            model.addAttribute("error", "User already exists");
+            return "registration";
+        }
+
+        userData.create(email, password);
+        return "redirect:/login";
+    }
     @GetMapping("/logout")
-    public String logout() {
+    public String logoutGet(){
+        sessionUser.clear();
+        return "redirect:/login";
+    }
+    @PostMapping("/logout")
+    public String doLogout() {
         sessionUser.clear();
         return "redirect:/login";
     }
