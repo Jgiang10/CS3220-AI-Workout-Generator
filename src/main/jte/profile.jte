@@ -54,7 +54,7 @@
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top">
     <div class="container-lg">
-        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
+        <a class="navbar-brand fw-bold" href="/">ForgeFit</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a href="/about" class="nav-link px-3 text-dark">About Us</a></li>

@@ -12,7 +12,7 @@
 
 <nav class="navbar navbar-expand-lg bg-light border-bottom py-3 px-4">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
+        <a class="navbar-brand fw-bold" href="/">ForgeFit</a>
     </div>
 </nav>
 

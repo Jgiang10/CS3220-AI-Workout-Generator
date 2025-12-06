@@ -16,7 +16,7 @@
 
 <header class="p-3 bg-lightgray">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
+        <a class="navbar-brand fw-bold" href="/">ForgeFit</a>
 
         <nav class="nav">
             <a class="nav-link link" href="/about">About Us</a>
@@ -34,7 +34,8 @@
 
 <main class="container text-center py-5">
 
-    <h1 class="display-4 fw-bold mt-4">AI Workout Generator</h1>
+    <h1 class="display-4 fw-bold mt-4">ForgeFit</h1>
+    <h2 class="display-4">Your AI Workout Generator</h2>
 
     <p class="lead mt-3">
         Create personalized workouts instantly based on your goals, equipment, and experience level.

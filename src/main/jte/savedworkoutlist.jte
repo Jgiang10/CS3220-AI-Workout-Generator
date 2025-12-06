@@ -11,22 +11,21 @@
 </head>
 <body>
 <header class="p-3 bg-lightgray">
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
-        <div class="container-lg">
-            <a class="navbar-brand" href="/">LOGO</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a href="/about" class="nav-link">About Us</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">${username == null ? "Profile" : username}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${username == null ? "/login" : "/logout"}">${username == null ? "Login" : "Logout"}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold" href="/">ForgeFit</a>
+
+        <nav class="nav">
+            <a class="nav-link link" href="/about">About Us</a>
+
+            <a class="nav-link link" href="/profile">
+                ${username == null ? "Profile" : username}
+            </a>
+
+            <a class="nav-link link" href="${username == null ? "/login" : "/logout"}">
+                ${username == null ? "Login" : "Logout"}
+            </a>
+        </nav>
+    </div>
 </header>
 
 <section class="container-lg py-4">

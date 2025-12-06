@@ -124,7 +124,7 @@ public class WorkoutController {
 
         model.addAttribute("workout", workout);
 
-        return "workoutview";   // src/main/jte/workoutview.jte
+        return "specificview";
     }
 
     @PostMapping("/save")

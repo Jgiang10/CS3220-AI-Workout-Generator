@@ -16,7 +16,7 @@
 <body>
 <header class="p-3 bg-lightgray">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
+        <a class="navbar-brand fw-bold" href="/">ForgeFit</a>
 
         <nav class="nav">
             <a class="nav-link link" href="/about">About Us</a>
