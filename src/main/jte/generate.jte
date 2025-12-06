@@ -1,4 +1,4 @@
-@param cs3220.ai_workout_generator.Controller.User bodyInfo
+@param cs3220.ai_workout_generator.User bodyInfo
 @param String username
 @param String prompt
 @param String result
@@ -92,6 +92,11 @@
                 Open Saved Workout
             </a>
 
+            <form action = "/save" method="post">
+                <input type="hidden" name="prompt" value="${prompt}">
+                <input type="hidden" name="result" value="${result}">
+                <button type="submit" class="btn btn-primary mt-3">Save Workout</button>
+            </form>
             <a class="btn btn-outline-dark" href="/workouts">View All Workouts</a>
 
         </div>

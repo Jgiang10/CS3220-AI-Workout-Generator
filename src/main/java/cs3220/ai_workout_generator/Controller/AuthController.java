@@ -1,6 +1,10 @@
 package cs3220.ai_workout_generator.Controller;
 
+import cs3220.ai_workout_generator.Repository.UserProfileRepository;
+import cs3220.ai_workout_generator.Repository.UserRepository;
 import cs3220.ai_workout_generator.SessionUser;
+import cs3220.ai_workout_generator.User;
+import cs3220.ai_workout_generator.UserProfile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,5 @@
 @param String username
+@param java.util.List<cs3220.ai_workout_generator.Workout> workouts
 
 <!doctype html>
 <html lang="en">
@@ -30,9 +31,25 @@
     </div>
 </header>
 
-<h1>Workout List Page</h1>
+<section class="container-lg py-4">
+    <h1>Workout List Page</h1>
 
-
+    @if (workouts == null || workouts.isEmpty())
+        <p>No workouts available.</p>
+    @else
+        <div class="list-group">
+            @for (var w: workouts)
+            <a class="list-group-item list-group-item-action" href="/workouts/${w.getId()}">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${w.getTitle()}</h5>
+                </div>
+                <p class ="mb-1">${w.getContent()}</p>
+                <small>Owner: ${w.getOwnerUsername()}</small>
+            </a>
+            @endfor
+        </div>
+    @endif
+</section>
 
 <footer class="text-center py-4 border-top">
     © ${java.time.Year.now().getValue()} AI Workout Generator
