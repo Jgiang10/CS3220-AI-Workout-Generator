@@ -12,34 +12,30 @@
 </head>
 <body>
 <header class="p-3 bg-lightgray">
-    <nav class="navbar navbar-expand-lg bg-light border-bottom">
-        <div class="container-lg">
-            <a class="navbar-brand" href="/">LOGO</a>
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
 
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
+        <nav class="nav">
+            <a class="nav-link link" href="/about">About Us</a>
 
-                    <li class="nav-item"><a href="/about" class="nav-link">About Us</a></li>
+            <a class="nav-link link" href="/profile">
+                ${username == null ? "Profile" : username}
+            </a>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">
-                            ${username == null ? "Profile" : username}
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="${username == null ? "/login" : "/logout"}">
-                            ${username == null ? "Login" : "Logout"}
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
+            <a class="nav-link link" href="${username == null ? "/login" : "/logout"}">
+                ${username == null ? "Login" : "Logout"}
+            </a>
+        </nav>
+    </div>
 </header>
 
-<p>About Us Page</p>
+<div class="d-flex align-items-center gap-4">
+    <img src="/images/csulalogo.png" class="img-fluid" style="max-width: 200px;" alt="calstatelalogo">
+
+    <p>This project was made by CS3220 students: Jason Giang, Benjamin Geiser, Cristian Juan, and Anderson Rodriguez.
+        From CSULA, we bring you our AI Workout Generator, meant to
+        help users create their ideal workout by a simple prompt and their inputted data.</p>
+</div>
 
 <footer class="text-center py-4 border-top">
     © ${java.time.Year.now().getValue()} AI Workout Generator

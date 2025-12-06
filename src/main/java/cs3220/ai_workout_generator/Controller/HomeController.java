@@ -14,6 +14,10 @@ public class HomeController {
     public HomeController(SessionUser sessionUser){
         this.sessionUser = sessionUser;
     }
+    @GetMapping("/")
+    public String blank(Model model) {
+        return "redirect:/home";
+    }
 
     @GetMapping("/home")
     public String home(Model model) {

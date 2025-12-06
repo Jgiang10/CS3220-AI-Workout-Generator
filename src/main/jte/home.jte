@@ -16,7 +16,7 @@
 
 <header class="p-3 bg-lightgray">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <h1 class="headerinfo">LOGO</h1>
+        <a class="navbar-brand fw-bold fs-4" href="/">LOGO</a>
 
         <nav class="nav">
             <a class="nav-link link" href="/about">About Us</a>
@@ -50,7 +50,7 @@
 
 <footer class="text-center py-4 border-top">
     <div class="small">
-        © ${java.time.Year.now().getValue()} AI Workout Generator — Benjamin Geiser
+        © ${java.time.Year.now().getValue()} AI Workout Generator
     </div>
 </footer>
 
