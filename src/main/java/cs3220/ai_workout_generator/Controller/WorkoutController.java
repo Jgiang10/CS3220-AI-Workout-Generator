@@ -17,6 +17,7 @@ import cs3220.ai_workout_generator.AiExchange;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Controller
 public class WorkoutController {
@@ -58,11 +59,8 @@ public class WorkoutController {
     public String handleGenerate(@RequestParam String prompt,
                                  Model model) {
 
-        if (!sessionUser.isAuthenticated()){
-            return "redirect:/login";
-        }
 
-        String username = sessionUser.getEmail();
+        String username = sessionUser.isAuthenticated() ? sessionUser.getEmail() : null;
         // Call AI service to generate text
         String resultText;
         try {
@@ -74,19 +72,21 @@ public class WorkoutController {
         // Recording exchange for future uses so there aren't repeats
         history.add(new AiExchange(prompt, resultText));
 
+        //testing without this
         // Save workout in in-memory repository
-        Workout saved = workouts.createAIWorkout(
-                "Workout: " + prompt,
-                resultText,
-                username,
-                username
-        );
+        //Workout saved = workouts.createAIWorkout(
+        //        "Workout: " + prompt,
+        //        resultText,
+        //        username,
+        //        username
+        //);
 
         // Put everything back into the model for generate.jte
         model.addAttribute("username", username);
         model.addAttribute("prompt", prompt);
         model.addAttribute("result", resultText);
-        model.addAttribute("workoutId", Long.valueOf(saved.getId()));
+        // changed Long.valueOf(saved.getId()) to null for testing
+        model.addAttribute("workoutId", null);
 
         return "generate";
     }
@@ -125,6 +125,43 @@ public class WorkoutController {
         model.addAttribute("workout", workout);
 
         return "workoutview";   // src/main/jte/workoutview.jte
+    }
+
+    @PostMapping("/save")
+    public String saveWorkout(@RequestParam String prompt,
+                              @RequestParam(required = false) String result) {
+        if (!sessionUser.isAuthenticated()) {
+            return "redirect:/login";
+        }
+        String username = sessionUser.getEmail();
+        String content = (result == null || result.isBlank()) ? prompt : result;
+
+        // New code
+        List<Workout> existing = workouts.getWorkoutsByOwner(username).stream()
+                .filter(w -> content.equals(w.getContent()))
+                .collect(Collectors.toList());
+        if (existing.isEmpty()) {
+            workouts.createAIWorkout("Workout: " + prompt, content, username, username);
+        }
+        //End of new code
+        // changed workouts to saved-workouts
+        return "redirect:/saved-workouts";
+    }
+
+    @GetMapping("/saved-workouts")
+    public String listSavedWorkouts(Model model) {
+        if (!sessionUser.isAuthenticated()){
+            return "redirect:/login";
+        }
+        String username = sessionUser.getEmail();
+        List<Workout> myWorkouts = workouts.getWorkoutsByOwner(username);
+
+        List<Workout> savedAi = myWorkouts.stream()
+                .filter(w -> w.getExercises() == null && w.getContent() != null)
+                .collect(Collectors.toList());
+        model.addAttribute("username", username);
+        model.addAttribute("workouts", savedAi);
+        return "savedworkoutlist";   // src/main/jte/savedworkoutlist.jte
     }
 
     private String realChat(String message) {
