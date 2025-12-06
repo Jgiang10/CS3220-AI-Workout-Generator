@@ -1,4 +1,4 @@
-package cs3220.ai_workout_generator.Controller;
+package cs3220.ai_workout_generator;
 
 import jakarta.persistence.*;
 
