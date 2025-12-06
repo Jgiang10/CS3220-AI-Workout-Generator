@@ -88,7 +88,7 @@
         <div class="card-footer d-flex justify-content-between">
 
             <a class="btn btn-outline-dark"
-               href="${workoutId == null ? "/workouts" : ("/workouts/" + workoutId)}">
+               href="/saved-workouts">
                 Open Saved Workout
             </a>
 
